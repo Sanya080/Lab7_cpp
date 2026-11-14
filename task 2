@@ -1,0 +1,105 @@
+// Лабораторна робота №7. Завдання 2, варіант 7
+#include <iostream>
+#include <iomanip>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+const int MAX = 100;
+
+int main()
+{
+    int a[MAX][MAX];
+    int n, m;
+    int mode;
+
+    cout << "Введіть кількість рядків n (від 1 до " << MAX << "): ";
+    cin >> n;
+    while (n < 1 || n > MAX)
+    {
+        cout << "Помилка: n має бути від 1 до " << MAX << ". Введіть n ще раз: ";
+        cin >> n;
+    }
+
+    cout << "Введіть кількість стовпчиків m (від 1 до " << MAX << "): ";
+    cin >> m;
+    while (m < 1 || m > MAX)
+    {
+        cout << "Помилка: m має бути від 1 до " << MAX << ". Введіть m ще раз: ";
+        cin >> m;
+    }
+
+    cout << "Спосіб заповнення масиву:" << endl;
+    cout << "  1 - випадкові числа (rand)" << endl;
+    cout << "  2 - ввести вручну" << endl;
+    cout << "Ваш вибір: ";
+    cin >> mode;
+    while (mode != 1 && mode != 2)
+    {
+        cout << "Помилка: введіть 1 або 2: ";
+        cin >> mode;
+    }
+
+    if (mode == 1)
+    {
+        srand((unsigned)time(0));
+
+        for (int i = 0; i < n; i++)
+        {
+            int *row = a[i];
+            for (int j = 0; j < m; j++)
+                *(row + j) = rand() % 21 - 10;
+        }
+    }
+    else
+    {
+        for (int i = 0; i < n; i++)
+        {
+            int *row = a[i];
+            for (int j = 0; j < m; j++)
+            {
+                cout << "a[" << i + 1 << "][" << j + 1 << "] = ";
+                cin >> *(row + j);
+            }
+        }
+    }
+
+    cout << endl << "Початковий масив (" << n << " x " << m << "):" << endl;
+    for (int i = 0; i < n; i++)
+    {
+        int *row = a[i];
+        for (int j = 0; j < m; j++)
+            cout << setw(5) << *(row + j);
+        cout << endl;
+    }
+    cout << endl;
+
+    int rowsCount = 0;
+
+    cout << "Кількість парних елементів у кожному рядку:" << endl;
+
+    for (int i = 0; i < n; i++)
+    {
+        int *row = a[i];
+        int evenCount = 0;
+
+        for (int j = 0; j < m; j++)
+        {
+            if (*(row + j) % 2 == 0)
+                evenCount++;
+        }
+
+        cout << "  рядок " << setw(2) << i + 1 << ": " << evenCount;
+
+        if (evenCount == 2)
+        {
+            rowsCount++;
+            cout << "  <- підходить";
+        }
+        cout << endl;
+    }
+
+    cout << endl << "Кількість рядків, у яких є два парних елемента: " << rowsCount << endl;
+
+    return 0;
+}
